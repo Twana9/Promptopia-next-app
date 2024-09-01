@@ -6,7 +6,7 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 export function Nav() {
   const isUserLoggedIn = true;
   const [providers, setProviders] = useState(null);
-  const [toggleDropdown, setToggleDropdown] = useState(true);
+  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
     async function setProviders() {
@@ -27,7 +27,7 @@ export function Nav() {
         />
         <p className="logo_text">Promptopia</p>
       </Link>
-      {/* Desktop Navigation  */}
+      {/* Desktop Navigation ////////////////////////////////////////// */}
       <div className="sm:flex hidden">
         {isUserLoggedIn ? (
           <div className="flex gap-3 md:gap-5">
