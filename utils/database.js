@@ -1,45 +1,23 @@
 import mongoose from "mongoose";
-
 let isConnected = false;
-const connectToDB = async () => {
+
+export const connectToDB = async () => {
   mongoose.set("strictQuery", true);
 
   if (isConnected) {
-    console.log("user already connected");
+    console.log("MongoDB is already connected");
     return;
   }
   try {
-    await mongoose.connect(process.env.MONGOODB_URI, {
+    await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "share_prompt",
     });
-
     isConnected = true;
+    console.log("MongoDB connected");
   } catch (error) {
     console.log(error);
   }
 };
-export default connectToDB;
-//fix mongoo string variable
-// import mongoose from "mongoose";
-// let isConnected = false;
-
-// export const connectToDB = async () => {
-//   mongoose.set("strictQuery", true);
-
-//   if (isConnected) {
-//     console.log("MongoDB is already connected");
-//     return;
-//   }
-//   try {
-//     await mongoose.connect(process.env.MONGODB_URI, {
-//       dbName: "share_prompt",
-//     });
-//     isConnected = true;
-//     console.log("MongoDB connected");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 // import mongoose from "mongoose";
 // let isConnected = false;

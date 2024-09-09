@@ -1,45 +1,26 @@
 import { Schema, model, models } from "mongoose";
 
-const schemaUser = new Schema({
+const UserSchema = new Schema({
   email: {
     type: String,
-    unique: [true, "only one emial by this name"],
-    required: [true, "needed please"],
+    unique: [true, "Email already exists!"],
+    required: [true, "Email is required!"],
   },
-  password: {
+  username: {
     type: String,
-    required: [true, "needed please"],
+    required: [true, "Username is required!"],
+    match: [
+      /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
+      "Username invalid, it should contain 8-20 alphanumeric letters and be unique!",
+    ],
   },
   image: {
     type: String,
   },
 });
 
-export const User = models.User || model("User", schemaUser);
+//first it checks if the user is there it will return if not then
+//the model will be created
+const User = models.User || model("User", UserSchema);
 
-// import { Schema, model, models } from "mongoose";
-
-// const UserSchema = new Schema({
-//   email: {
-//     type: String,
-//     unique: [true, "Email already exists!"],
-//     required: [true, "Email is required!"],
-//   },
-//   username: {
-//     type: String,
-//     required: [true, "Username is required!"],
-//     match: [
-//       /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
-//       "Username invalid, it should contain 8-20 alphanumeric letters and be unique!",
-//     ],
-//   },
-//   image: {
-//     type: String,
-//   },
-// });
-
-// //first it checks if the user is there it will return if not then
-// //the model will be created
-// const User = models.User || model("User", UserSchema);
-
-// export default User;
+export default User;
