@@ -12,8 +12,8 @@ const handler = NextAuth({
   ],
 
   async session({ session }) {
-    const userSession = User.fineOne({
-      email: session.email,
+    const userSession = await User.fineOne({
+      email: session.user.email,
     });
 
     session.user.id = userSession._id.toString();
@@ -25,11 +25,11 @@ const handler = NextAuth({
     try {
       await connectToDB();
 
-      const userExists = User.findOne({
+      const userExists = await User.findOne({
         email: profile.email,
       });
       if (!userExists) {
-        await mongoose.create({
+        await User.create({
           email: profile.email,
           username: profile.name.replace(" ", "").toLowerCase(),
           image: profile.picture,
