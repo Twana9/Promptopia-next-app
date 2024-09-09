@@ -1,25 +1,49 @@
-import { Profile } from "@components/Profile";
-import mongoose from "mongoose";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { signIn } from "next-auth/react";
+import connectToDB from "@utils/database";
+import { User } from "@models/user";
+
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: "",
-      clientSecret: "",
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
 
-  async session({ session }) {},
+  async session({ session }) {
+    const userSession = User.fineOne({
+      email: session.email,
+    });
+
+    session.user.id = userSession._id.toString();
+
+    return session;
+  },
 
   async signIn({ profile }) {
     try {
+      await connectToDB();
+
+      const userExists = User.findOne({
+        email: profile.email,
+      });
+      if (!userExists) {
+        await mongoose.create({
+          email: profile.email,
+          username: profile.name.replace(" ", "").toLowerCase(),
+          image: profile.picture,
+        });
+      }
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   },
 });
+
+export { handler as GET, handler as POST };
 
 // import NextAuth from "next-auth/next";
 // import GoogleProvider from "next-auth/providers/google";

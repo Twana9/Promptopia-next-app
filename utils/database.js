@@ -9,12 +9,17 @@ const connectToDB = async () => {
     return;
   }
   try {
-    await mongoose.create({});
+    await mongoose.connect(process.env.MONGOODB_URI, {
+      dbName: "share_prompt",
+    });
+
+    isConnected = true;
   } catch (error) {
-    console.log(errror);
+    console.log(error);
   }
 };
-
+export default connectToDB;
+//fix mongoo string variable
 // import mongoose from "mongoose";
 // let isConnected = false;
 
