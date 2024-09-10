@@ -126,3 +126,17 @@ export function Nav() {
     </nav>
   );
 }
+
+// let {data : session} = useSession();
+// useEffect({()=>{
+//   async function setUpProviders(){
+//     const response = await getProviders();
+//     setProviders(response);
+
+//   }
+//   setUpProviders();
+
+// }},[])
+
+//session?.user &&
+//providers && Object.values(providers).map(provider => <button onClick={()=>signIn(provider.id)}>)
