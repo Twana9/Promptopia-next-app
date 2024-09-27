@@ -19,7 +19,7 @@ const MyProfile = () => {
 
   return (
     <Profile
-      name="my profile"
+      name="my"
       desc="Welcome to your personalized profile page"
       data={posts}
       handleEdit={handleEdit}
@@ -27,4 +27,4 @@ const MyProfile = () => {
     />
   );
 };
-export default Profile;
+export default MyProfile;
