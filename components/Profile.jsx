@@ -1,3 +1,8 @@
-export function Profile() {
-  return <h1>Profile</h1>;
+import { PromptCard } from "./PromptCard";
+export function Profile({ name, desc, datal, handleEdit, handleDelete }) {
+  return (
+    <section className="w-full">
+      <h1>{name} Profile</h1>
+    </section>
+  );
 }

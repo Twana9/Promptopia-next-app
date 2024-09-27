@@ -11,7 +11,6 @@ const MyProfile = () => {
       const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const data = await response.json();
       setPosts(data);
-      console.log(data);
     };
     if (session?.user.id) fetchPosts();
   }, []);
@@ -20,7 +19,7 @@ const MyProfile = () => {
 
   return (
     <Profile
-      name="my"
+      name="my profile"
       desc="Welcome to your personalized profile page"
       data={posts}
       handleEdit={handleEdit}
