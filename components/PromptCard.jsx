@@ -75,7 +75,10 @@ export const PromptCard = ({
         <div className="flex justify-between mt-6 border-t border-gray-200 pt-3">
           <p
             className="font-inter text-sm green_gradient  cursor-pointer"
-            onClick={handleEdit}
+            onClick={() => {
+              handleEdit();
+              router.push(`/edit-prompt?id=${post._id}`);
+            }}
           >
             Edit
           </p>
