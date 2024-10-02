@@ -6,9 +6,9 @@ import { Form } from "@components/Form";
 
 export default function UpdatePrompt() {
   const searchParam = useSearchParams();
-  const paramId = searchParam.get("id");
+  const promptId = searchParam.get("id");
   const router = useRouter();
-  const { data: session } = useSession();
+
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
     prompt: "",
@@ -16,39 +16,40 @@ export default function UpdatePrompt() {
   });
 
   useEffect(() => {
-    const updatePrompt = async () => {
-      const response = await fetch(`/api/prompt/${paramId}`, {
-        prompt: post.prompt,
-        tag: post.tag,
+    const getPromptDetails = async () => {
+      const response = await fetch(`/api/prompt/id=${promptId}`);
+      const data = await response.json();
+      setPost({
+        prompt: data.prompt,
+        tag: data.tag,
       });
-      return JSON.stringify(response);
     };
-    updatePrompt();
-  }, [paramId]);
-  async function createPrompt(e) {
-    e.preventDefault();
-    setSubmitting(true);
-    try {
-      const response = await fetch("/api/prompt/new", {
-        method: "POST",
-        body: JSON.stringify({
-          prompt: post.prompt,
-          userId: session?.user.id,
-          tag: post.tag,
-        }),
-      });
-      if (response.ok) {
-        router.push("/");
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setSubmitting(false);
-    }
-  }
+    if (promptId) getPromptDetails();
+  }, [promptId]);
+  // async function createPrompt(e) {
+  //   e.preventDefault();
+  //   setSubmitting(true);
+  //   try {
+  //     const response = await fetch("/api/prompt/new", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         prompt: post.prompt,
+  //         userId: session?.user.id,
+  //         tag: post.tag,
+  //       }),
+  //     });
+  //     if (response.ok) {
+  //       router.push("/");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // }
   return (
     <Form
-      type="Create"
+      type="Edit"
       post={post}
       setPost={setPost}
       submitting={submitting}
