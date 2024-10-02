@@ -5,8 +5,8 @@ import { useSession } from "next-auth/react";
 import { Form } from "@components/Form";
 
 export default function UpdatePrompt() {
-  const searchParam = useSearchParams();
-  const promptId = searchParam.get("id");
+  const searchParams = useSearchParams();
+  const promptId = searchParams.get("id");
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState(false);
@@ -17,7 +17,7 @@ export default function UpdatePrompt() {
 
   useEffect(() => {
     const getPromptDetails = async () => {
-      const response = await fetch(`/api/prompt/id=${promptId}`);
+      const response = await fetch(`/api/prompt?id=${promptId}`);
       const data = await response.json();
       setPost({
         prompt: data.prompt,
@@ -47,7 +47,7 @@ export default function UpdatePrompt() {
   //     setSubmitting(false);
   //   }
   // }
-  return (
+  return post.prompt ? (
     <Form
       type="Edit"
       post={post}
@@ -55,5 +55,7 @@ export default function UpdatePrompt() {
       submitting={submitting}
       handleSubmit={() => {}}
     />
+  ) : (
+    <h1>Loading . . .</h1>
   );
 }
