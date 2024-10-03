@@ -41,9 +41,9 @@ export function Nav() {
             <Link href="/profile">
               <Image
                 src={session?.user.image}
+                alt="profile picture"
                 width={37}
                 height={37}
-                alt="profile picture"
                 className="rounded-full"
               />
             </Link>
