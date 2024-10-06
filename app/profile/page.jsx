@@ -18,14 +18,14 @@ const MyProfile = () => {
   }, []);
 
   const handleDelete = async (post) => {
-    const isConfirmed = confirm("are you sure you want to delete the prompt?");
-    if (isConfirmed) {
+    const hasConfirmed = confirm("are you sure you want to delete the prompt?");
+    if (hasConfirmed) {
       try {
         await fetch(`/api/prompt/${post._id.toString()}`, {
           method: "DELETE",
         });
-        const newPosts = posts.filter((p) => p._id !== post._id);
-        setPosts(newPosts);
+        const filterdPosts = posts.filter((p) => p._id !== post._id);
+        setPosts(filterdPosts);
       } catch (error) {
         console.log(error);
       }
