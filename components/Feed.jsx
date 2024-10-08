@@ -9,7 +9,7 @@ function PromptCardList({ data, handleTagClick }) {
         <PromptCard
           key={post._id}
           post={post}
-          handleTagClick={handleTagClick}
+          handleTagClick={() => handleTagClick(post.tag)}
         />
       ))}
     </div>
@@ -51,6 +51,9 @@ export function Feed() {
       }, 500)
     );
   };
+  const handleTagClick = (tag) => {
+    setSearchText(tag);
+  };
   return (
     <section className="feed">
       <form className="relative w-full flex-center">
@@ -64,9 +67,12 @@ export function Feed() {
         />
       </form>
       {searchText ? (
-        <PromptCardList data={searchedResults} handleTagClick={() => {}} />
+        <PromptCardList
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
       ) : (
-        <PromptCardList data={posts} handleTagClick={() => {}} />
+        <PromptCardList data={posts} handleTagClick={handleTagClick} />
       )}
     </section>
   );
