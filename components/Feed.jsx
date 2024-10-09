@@ -53,6 +53,9 @@ export function Feed() {
   };
   const handleTagClick = (tag) => {
     setSearchText(tag);
+
+    const searchResult = filterPrompts(tag);
+    setSearchedResults(searchResult);
   };
   return (
     <section className="feed">
