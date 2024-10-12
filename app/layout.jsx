@@ -7,7 +7,7 @@ export const metadata = {
   title: "Promptopia",
   description: "Discover & Share AI Prompts",
   icons: {
-    icon: "/public/assets/images/logo.svg",
+    icon: "/assets/images/logo.svg",
   },
 };
 export default function RootLayout({ children }) {

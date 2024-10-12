@@ -11,7 +11,7 @@ export const PromptCard = ({
   handleEdit,
 }) => {
   const { data: session } = useSession();
-  const router = useRouter;
+  const router = useRouter();
   const pathName = usePathname();
 
   const [copied, setCopied] = useState("");
@@ -50,8 +50,8 @@ export const PromptCard = ({
               {post.creator.username}
             </h3>
             <p
-              className="font-inter font-sm 
-          text-gray-500"
+              className="font-inter text-[12px] 
+          text-gray-500 "
             >
               {post.creator.email}
             </p>
