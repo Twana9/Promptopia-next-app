@@ -12,7 +12,7 @@ export function Nav() {
     async function setUpProviders() {
       const response = await getProviders();
       setProviders(response);
-      // if (!providers) window.location.reload();
+      // if (!response.ok) window.location.reload();
     }
     setUpProviders();
   }, []);
