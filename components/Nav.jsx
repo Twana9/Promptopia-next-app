@@ -7,16 +7,22 @@ export function Nav() {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  // const [timeout, setTimeout] = useState(null);
+  const reset = () => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
 
   useEffect(() => {
     async function setUpProviders() {
       const response = await getProviders();
       setProviders(response);
-      // if (!response.ok) window.location.reload();
     }
     setUpProviders();
+    reset();
   }, []);
-  // useEffect(() => {}, []);
+
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-2 flex-center">
