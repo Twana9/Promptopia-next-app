@@ -7,11 +7,14 @@ export function Nav() {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  // const [timeout, setTimeout] = useState(null);
+  const [timeout, setTimeout] = useState(null);
   const reset = () => {
-    setTimeout(() => {
+    clearTimeout(timeout);
+    const resetTimeout = setTimeout(() => {
       window.location.reload();
     }, 500);
+
+    setTimeout(resetTimeout);
   };
 
   useEffect(() => {
