@@ -1,21 +1,13 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 export function Nav() {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  const [timeout, setTimeout] = useState(null);
-  const reset = () => {
-    clearTimeout(timeout);
-    const resetTimeout = setTimeout(() => {
-      window.location.reload();
-    }, 500);
-
-    setTimeout(resetTimeout);
-  };
+  // const timeout = useRef(null);
 
   useEffect(() => {
     async function setUpProviders() {
@@ -23,8 +15,17 @@ export function Nav() {
       setProviders(response);
     }
     setUpProviders();
-    reset();
   }, []);
+  // useEffect(() => {
+  //   if (!providers) {
+  //     timeout.current = setTimeout(() => {
+  //       window.location.reload();
+  //     }, 500);
+  //   }
+  //   return () => {
+  //     clearTimeout(timeout.current);
+  //   };
+  // }, [providers]);
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
