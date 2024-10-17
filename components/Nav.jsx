@@ -7,7 +7,7 @@ export function Nav() {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  // const timeout = useRef(null);
+  const timeout = useRef(null);
 
   useEffect(() => {
     async function setUpProviders() {
@@ -16,16 +16,23 @@ export function Nav() {
     }
     setUpProviders();
   }, []);
-  // useEffect(() => {
-  //   if (!providers) {
-  //     timeout.current = setTimeout(() => {
-  //       window.location.reload();
-  //     }, 500);
-  //   }
-  //   return () => {
-  //     clearTimeout(timeout.current);
-  //   };
-  // }, [providers]);
+  useEffect(() => {
+    // Check if the page has already reloaded in the current session
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
+
+    if (!hasReloaded && !providers) {
+      // Set a flag to avoid multiple reloads
+      sessionStorage.setItem("hasReloaded", "true");
+
+      timeout.current = setTimeout(() => {
+        window.location.reload();
+      }, 500); // reloads the page after 500ms if no providers
+    }
+
+    return () => {
+      clearTimeout(timeout.current);
+    };
+  }, [providers]);
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
