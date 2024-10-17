@@ -1,7 +1,7 @@
 import "@styles/globals.css";
 
-import { Nav } from "@components/Nav.jsx";
-import { Provider } from "@components/Provider.jsx";
+import { Nav } from "@components/Nav";
+import { Provider } from "@components/Provider";
 
 export const metadata = {
   title: "Promptopia",
@@ -10,7 +10,7 @@ export const metadata = {
     icon: "/assets/images/logo.svg",
   },
 };
-export default function RootLayout({ children }) {
+const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
@@ -26,4 +26,5 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+};
+export default RootLayout;

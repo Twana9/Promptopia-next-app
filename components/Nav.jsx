@@ -6,13 +6,20 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 export function Nav() {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const timeout = useRef(null);
 
   useEffect(() => {
     async function setUpProviders() {
-      const response = await getProviders();
-      setProviders(response);
+      try {
+        const response = await getProviders();
+        setProviders(response);
+      } catch (error) {
+        console.error("Error fetching providers:", error);
+      } finally {
+        setLoading(false); // Set loading to false once providers are fetched
+      }
     }
     setUpProviders();
   }, []);
@@ -32,7 +39,7 @@ export function Nav() {
     return () => {
       clearTimeout(timeout.current);
     };
-  }, [providers]);
+  }, [providers, loading]);
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
