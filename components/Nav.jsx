@@ -6,7 +6,6 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 export function Nav() {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const timeout = useRef(null);
 
@@ -16,30 +15,28 @@ export function Nav() {
         const response = await getProviders();
         setProviders(response);
       } catch (error) {
-        console.error("Error fetching providers:", error);
-      } finally {
-        setLoading(false); // Set loading to false once providers are fetched
+        console.log("Error fetching providers:", error);
       }
     }
     setUpProviders();
   }, []);
-  useEffect(() => {
-    // Check if the page has already reloaded in the current session
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
+  // useEffect(() => {
+  //   // Check if the page has already reloaded in the current session
+  //   const hasReloaded = sessionStorage.getItem("hasReloaded");
 
-    if (!hasReloaded && !providers) {
-      // Set a flag to avoid multiple reloads
-      sessionStorage.setItem("hasReloaded", "true");
+  //   if (!hasReloaded && !providers) {
+  //     // Set a flag to avoid multiple reloads
+  //     sessionStorage.setItem("hasReloaded", "true");
 
-      timeout.current = setTimeout(() => {
-        window.location.reload();
-      }, 500); // reloads the page after 500ms if no providers
-    }
+  //     timeout.current = setTimeout(() => {
+  //       window.location.reload();
+  //     }, 500); // reloads the page after 500ms if no providers
+  //   }
 
-    return () => {
-      clearTimeout(timeout.current);
-    };
-  }, [providers, loading]);
+  //   return () => {
+  //     clearTimeout(timeout.current);
+  //   };
+  // }, []);
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
@@ -53,102 +50,115 @@ export function Nav() {
         />
         <p className="logo_text">Promptopia</p>
       </Link>
-
-      {/* Desktop Navigation ////////////////////////////////////////// */}
-      <div className="sm:flex hidden">
-        {session?.user ? (
-          <div className="flex gap-3 md:gap-5">
-            <Link href="/create-prompt" className="black_btn">
-              Create Post
-            </Link>
-            <button type="button" onClick={signOut} className="outline_btn">
-              Sign Out
-            </button>
-            <Link href="/profile">
-              <Image
-                src={session?.user.image}
-                alt="profile picture"
-                width={37}
-                height={37}
-                className="rounded-full"
-              />
-            </Link>
-          </div>
-        ) : (
-          <>
-            {providers &&
-              Object.values(providers).map((provider) => (
-                <button
-                  type="button"
-                  key={provider.name}
-                  onClick={() => signIn(provider.id)}
-                  className="black_btn"
-                >
-                  Sign In
-                </button>
-              ))}
-          </>
-        )}
-      </div>
-      {/* mobile nav ////////////////////////////////// */}
-      <div className="flex sm:hidden relative">
-        {session?.user ? (
-          <div className="flex">
-            <Image
-              src={session?.user.image}
-              width={37}
-              height={37}
-              alt="profile"
-              className="rounded-full"
-              onClick={() => {
-                setToggleDropdown((prev) => !prev);
-              }}
-            />
-            {toggleDropdown && (
-              <div className="dropdown">
-                <Link
-                  href="/profile"
-                  className="dropdown_link"
-                  onClick={() => setToggleDropdown(false)}
-                >
-                  My Profile
+      {providers ? (
+        <>
+          {/* Desktop Navigation ////////////////////////////////////////// */}
+          <div className="sm:flex hidden">
+            {session?.user ? (
+              <div className="flex gap-3 md:gap-5">
+                <Link href="/create-prompt" className="black_btn">
+                  Create Post
                 </Link>
-                <Link
-                  href="/create-prompt"
-                  className="dropdown_link"
-                  onClick={() => setToggleDropdown(false)}
-                >
-                  Create Prompt
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => {
-                    signOut();
-                    setToggleDropdown(false);
-                  }}
-                  className=" mt-5 w-full black_btn"
-                >
+                <button type="button" onClick={signOut} className="outline_btn">
                   Sign Out
                 </button>
+                <Link href="/profile">
+                  <Image
+                    src={session?.user.image}
+                    alt="profile picture"
+                    width={37}
+                    height={37}
+                    className="rounded-full"
+                  />
+                </Link>
               </div>
+            ) : (
+              <>
+                {providers &&
+                  Object.values(providers).map((provider) => (
+                    <button
+                      type="button"
+                      key={provider.name}
+                      onClick={() => signIn(provider.id)}
+                      className="black_btn"
+                    >
+                      Sign In
+                    </button>
+                  ))}
+              </>
             )}
           </div>
-        ) : (
-          <>
-            {providers &&
-              Object.values(providers).map((provider) => (
-                <button
-                  type="button"
-                  key={provider.name}
-                  onClick={() => signIn(provider.id)}
-                  className="black_btn"
-                >
-                  Sign In
-                </button>
-              ))}
-          </>
-        )}
-      </div>
+          {/* mobile nav ////////////////////////////////// */}
+          <div className="flex sm:hidden relative">
+            {session?.user ? (
+              <div className="flex">
+                <Image
+                  src={session?.user.image}
+                  width={37}
+                  height={37}
+                  alt="profile"
+                  className="rounded-full"
+                  onClick={() => {
+                    setToggleDropdown((prev) => !prev);
+                  }}
+                />
+                {toggleDropdown && (
+                  <div className="dropdown">
+                    <Link
+                      href="/profile"
+                      className="dropdown_link"
+                      onClick={() => setToggleDropdown(false)}
+                    >
+                      My Profile
+                    </Link>
+                    <Link
+                      href="/create-prompt"
+                      className="dropdown_link"
+                      onClick={() => setToggleDropdown(false)}
+                    >
+                      Create Prompt
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        signOut();
+                        setToggleDropdown(false);
+                      }}
+                      className=" mt-5 w-full black_btn"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                {providers &&
+                  Object.values(providers).map((provider) => (
+                    <button
+                      type="button"
+                      key={provider.name}
+                      onClick={() => signIn(provider.id)}
+                      className="black_btn"
+                    >
+                      Sign In
+                    </button>
+                  ))}
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="flex-center w-full">
+          <Image
+            src="/assets/icons/loader.svg"
+            height={50}
+            width={50}
+            alt="loader"
+            className="object-contain"
+          />
+        </div>
+      )}
     </nav>
   );
 }
